@@ -10,6 +10,8 @@ use App\Logging\Logger;
 use App\Reports\Impl\CpuReport;
 use App\Reports\Impl\DiskReport;
 use App\Reports\Impl\MemoryReport;
+use App\Services\LoggingPaymentService;
+use App\Services\PaymentService;
 use App\Services\ReportAnalyzer;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\App;
@@ -34,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
                     ->needs('$nameApp')
                     ->giveConfig('app.name');
 
+        // Contoh Tagging
         $this->app->bind(CpuReport::class, function() {
             return new CpuReport();
         });
@@ -42,7 +45,7 @@ class AppServiceProvider extends ServiceProvider
             return new DiskReport();
         });
 
-        $this->app->bind(MemoryReport::class, function(){ 
+        $this->app->bind(MemoryReport::class, function(){
             return new MemoryReport();
         });
 
@@ -50,6 +53,13 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ReportAnalyzer::class, function(Application $app) {
             return new ReportAnalyzer(iterator_to_array($app->tagged('Reports')));
+        });
+
+
+        // Extending Bindings
+
+        $this->app->extend(PaymentService::class, function(PaymentService $paymentService, Application $app){
+            return new LoggingPaymentService($paymentService);
         });
     }
 
