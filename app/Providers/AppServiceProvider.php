@@ -12,7 +12,9 @@ use App\Reports\Impl\DiskReport;
 use App\Reports\Impl\MemoryReport;
 use App\Services\LoggingPaymentService;
 use App\Services\PaymentService;
+use App\Services\PodcastParser;
 use App\Services\ReportAnalyzer;
+use App\Services\Transistor;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
@@ -60,6 +62,26 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->extend(PaymentService::class, function(PaymentService $paymentService, Application $app){
             return new LoggingPaymentService($paymentService);
+        });
+
+        // Singletons & singletonsIf Method
+
+        $this->app->singleton(PodcastParser::class, function(){
+            return new PodcastParser();
+        });
+
+        $this->app->singleton(Transistor::class, function(Application $app){
+            return new Transistor($app->make(PodcastParser::class));
+        });
+
+        $this->app->singletonIf(Transistor::class, function(Application $app){
+            return new Transistor($app->make(PodcastParser::class));
+        });
+
+        // scoped method
+
+        $this->app->scoped(Transistor::class, function(Application $app){
+            return new Transistor($app->make(PodcastParser::class));
         });
     }
 
