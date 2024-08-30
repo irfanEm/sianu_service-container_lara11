@@ -66,23 +66,31 @@ class AppServiceProvider extends ServiceProvider
 
         // Singletons & singletonsIf Method
 
-        $this->app->singleton(PodcastParser::class, function(){
-            return new PodcastParser();
-        });
+        // $this->app->singleton(PodcastParser::class, function(){
+        //     return new PodcastParser();
+        // });
 
-        $this->app->singleton(Transistor::class, function(Application $app){
-            return new Transistor($app->make(PodcastParser::class));
-        });
+        // $this->app->singleton(Transistor::class, function(Application $app){
+        //     return new Transistor($app->make(PodcastParser::class));
+        // });
 
-        $this->app->singletonIf(Transistor::class, function(Application $app){
-            return new Transistor($app->make(PodcastParser::class));
-        });
+        // $this->app->singletonIf(Transistor::class, function(Application $app){
+        //     return new Transistor($app->make(PodcastParser::class));
+        // });
 
         // scoped method
 
-        $this->app->scoped(Transistor::class, function(Application $app){
-            return new Transistor($app->make(PodcastParser::class));
-        });
+        // $this->app->scoped(Transistor::class, function(Application $app){
+        //     return new Transistor($app->make(PodcastParser::class));
+        // });
+
+
+        // Binding Instance
+
+        $podcastParser = new PodcastParser();
+        $transistor = new Transistor($podcastParser);
+
+        $this->app->instance(Transistor::class, $transistor);
     }
 
     /**
