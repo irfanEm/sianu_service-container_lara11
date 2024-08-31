@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\ContractsImpl\RedistEventPusher;
+use App\Contracts\EventPusher;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Logging\Impl\AdminLoggerImpl;
@@ -91,6 +93,11 @@ class AppServiceProvider extends ServiceProvider
         $transistor = new Transistor($podcastParser);
 
         $this->app->instance(Transistor::class, $transistor);
+
+
+        // Binding Interface to Implementation
+
+        $this->app->bind(EventPusher::class, RedistEventPusher::class);
     }
 
     /**
