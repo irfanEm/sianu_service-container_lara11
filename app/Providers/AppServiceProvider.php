@@ -2,24 +2,31 @@
 
 namespace App\Providers;
 
-use App\Contracts\ContractsImpl\RedistEventPusher;
-use App\Contracts\EventPusher;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
-use App\Logging\Impl\AdminLoggerImpl;
-use App\Logging\Impl\UserLoggerImpl;
 use App\Logging\Logger;
-use App\Reports\Impl\CpuReport;
-use App\Reports\Impl\DiskReport;
-use App\Reports\Impl\MemoryReport;
-use App\Services\LoggingPaymentService;
-use App\Services\PaymentService;
-use App\Services\PodcastParser;
-use App\Services\ReportAnalyzer;
 use App\Services\Transistor;
-use Illuminate\Foundation\Application;
+use App\Contracts\EventPusher;
+use App\Services\S3Filesystem;
+use App\Reports\Impl\CpuReport;
+use App\Services\PodcastParser;
+use App\Reports\Impl\DiskReport;
+use App\Services\PaymentService;
+use App\Services\ReportAnalyzer;
+use App\Services\LocalFilesystem;
+use App\Reports\Impl\MemoryReport;
 use Illuminate\Support\Facades\App;
+use App\Logging\Impl\UserLoggerImpl;
+use App\Logging\Impl\AdminLoggerImpl;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Application;
+use App\Services\LoggingPaymentService;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\VideoController;
+use App\Http\Controllers\UploadController;
+use App\Contracts\ContractsImpl\RedistEventPusher;
+use App\Contracts\EventFiler;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -98,6 +105,17 @@ class AppServiceProvider extends ServiceProvider
         // Binding Interface to Implementation
 
         $this->app->bind(EventPusher::class, RedistEventPusher::class);
+
+
+        // contextual Binding
+
+        $this->app->when(PhotoController::class)
+                    ->needs(EventFiler::class)
+                    ->give(LocalFilesystem::class);
+
+        $this->app->when([UploadController::class,VideoController::class])
+                    ->needs(EventFiler::class)
+                    ->give(S3Filesystem::class);
     }
 
     /**
