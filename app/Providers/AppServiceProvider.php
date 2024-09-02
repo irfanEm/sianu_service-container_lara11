@@ -27,6 +27,13 @@ use App\Http\Controllers\VideoController;
 use App\Http\Controllers\UploadController;
 use App\Contracts\ContractsImpl\RedistEventPusher;
 use App\Contracts\EventFiler;
+use App\Filter\Filter;
+use App\Filter\FilterImpl\NullFilter;
+use App\Filter\FilterImpl\ProfanityFilter;
+use App\Filter\FilterImpl\ToLoongFilter;
+use App\Reports\Report;
+use App\Services\Firewall;
+use App\Services\ReportAggregator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -62,9 +69,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->tag([CpuReport::class, MemoryReport::class, DiskReport::class], 'Reports');
 
-        $this->app->bind(ReportAnalyzer::class, function(Application $app) {
-            return new ReportAnalyzer(iterator_to_array($app->tagged('Reports')));
-        });
+        // $this->app->bind(ReportAnalyzer::class, function(Application $app) {
+        //     return new ReportAnalyzer(iterator_to_array($app->tagged('Reports')));
+        // });
 
 
         // Extending Bindings
@@ -116,6 +123,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->when([UploadController::class,VideoController::class])
                     ->needs(EventFiler::class)
                     ->give(S3Filesystem::class);
+
+        $this->app->when(Firewall::class)
+                    ->needs(Filter::class)
+                    ->give([
+                            NullFilter::class,
+                            ProfanityFilter::class,
+                            ToLoongFilter::class,
+                        ]);
+
+        $this->app->when(ReportAggregator::class)
+                    ->needs(Report::class)
+                    ->giveTagged("Reports");
     }
 
     /**

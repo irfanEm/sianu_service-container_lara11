@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventPusherController;
+use App\Http\Controllers\FirewallController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\ReportAggregatorController;
 use App\Http\Controllers\ReportAnalyzerController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
@@ -23,3 +25,9 @@ Route::post('/event-push', [EventPusherController::class, 'index']);
 Route::get('/photo', [PhotoController::class, 'index']);
 Route::get('/upload', [UploadController::class, 'index']);
 Route::get('/photo', [VideoController::class, 'index']);
+
+// Binding Typed Variadics
+Route::get('/variadic', [FirewallController::class, 'filter']);
+
+// Binding Tag variadics
+Route::get('/tag-variadic', [ReportAggregatorController::class, 'generateReports']);
