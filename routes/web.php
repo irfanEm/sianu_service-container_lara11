@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventPusherController;
 use App\Http\Controllers\FirewallController;
+use App\Http\Controllers\helloWorldController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\ReportAggregatorController;
 use App\Http\Controllers\ReportAnalyzerController;
@@ -31,3 +32,6 @@ Route::get('/variadic', [FirewallController::class, 'filter']);
 
 // Binding Tag variadics
 Route::get('/tag-variadic', [ReportAggregatorController::class, 'generateReports']);
+
+// test Dependencys
+Route::get('/test-dependencys', [helloWorldController::class, 'test']);
