@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DependencyController;
 use App\Http\Controllers\EventPusherController;
 use App\Http\Controllers\FirewallController;
 use App\Http\Controllers\helloWorldController;
@@ -35,3 +36,4 @@ Route::get('/tag-variadic', [ReportAggregatorController::class, 'generateReports
 
 // test Dependencys
 Route::get('/test-dependencys', [helloWorldController::class, 'test']);
+Route::get('/sapa-nama', [DependencyController::class, 'sayHello']);
