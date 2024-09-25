@@ -43,3 +43,7 @@ Route::get('/sapa-nama', [DependencyController::class, 'sayHello']);
 Route::get('/zero-config', function(Services $services){
     return $services->sayHello();
 });
+
+// test Resolve
+// method makeWith()
+Route::get('/resolve-makewith/{jeneng}', [DependencyController::class, 'makeWith']);
