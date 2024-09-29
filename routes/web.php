@@ -1,6 +1,8 @@
 <?php
 
 use App\Dependencys\Services;
+use App\Dependencys\PodcastStats;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
@@ -47,3 +49,14 @@ Route::get('/zero-config', function(Services $services){
 // test Resolve
 // method makeWith()
 Route::get('/resolve-makewith/{jeneng}', [DependencyController::class, 'makeWith']);
+
+// method invocation & injection
+Route::get('/podcast-stats', function(){
+    $stats = App::call([new PodcastStats, 'generate']);
+
+    return response()->json($stats);
+});
+
+// container events route
+Route::get('/container-events', [DependencyController::class, 'containerEvents']);
+

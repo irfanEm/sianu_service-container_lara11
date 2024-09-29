@@ -32,6 +32,8 @@ use App\Filter\FilterImpl\NullFilter;
 use App\Filter\FilterImpl\ProfanityFilter;
 use App\Filter\FilterImpl\ToLoongFilter;
 use App\Reports\Report;
+use App\Services\AudioProcessor;
+use App\Services\Equalizer;
 use App\Services\Firewall;
 use App\Services\ReportAggregator;
 
@@ -142,6 +144,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $this->app->resolving(AudioProcessor::class, function(AudioProcessor $audioProcessor) {
+            $audioProcessor->setSampleRate(1997);
+        });
+
+        $this->app->resolving(Equalizer::class, function(Equalizer $equalizer) {
+            $equalizer->setFrequency(2711);
+        });
     }
 }
