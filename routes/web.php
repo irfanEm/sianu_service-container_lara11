@@ -15,6 +15,8 @@ use App\Http\Controllers\helloWorldController;
 use App\Http\Controllers\EventPusherController;
 use App\Http\Controllers\ReportAnalyzerController;
 use App\Http\Controllers\ReportAggregatorController;
+use App\Services\SapaNama;
+use Psr\Container\ContainerInterface;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,3 +62,13 @@ Route::get('/podcast-stats', function(){
 // container events route
 Route::get('/container-events', [DependencyController::class, 'containerEvents']);
 
+// psr-11 interface route
+Route::get('/psr-11/{nama}', function(ContainerInterface $container, $nama) {
+    $sapa = $container->get(SapaNama::class);
+
+    $sapaNama = $sapa->sapa($nama);
+
+    return response()->json([
+        'data' => $sapaNama,
+    ]);
+});
