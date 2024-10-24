@@ -15,6 +15,7 @@ use App\Http\Controllers\helloWorldController;
 use App\Http\Controllers\EventPusherController;
 use App\Http\Controllers\ReportAnalyzerController;
 use App\Http\Controllers\ReportAggregatorController;
+use App\Http\Controllers\ServiceProviderController;
 use App\Services\SapaNama;
 use Psr\Container\ContainerInterface;
 
@@ -72,3 +73,6 @@ Route::get('/psr-11/{nama}', function(ContainerInterface $container, $nama) {
         'data' => $sapaNama,
     ]);
 });
+
+// test register method
+Route::get('/register-method', [ServiceProviderController::class, 'testRegisterMethod']);

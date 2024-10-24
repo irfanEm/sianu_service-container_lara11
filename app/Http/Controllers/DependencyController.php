@@ -50,5 +50,6 @@ class DependencyController extends Controller
             'equalizer_frequency' => $equalizer->frequency
         ]);
     }
+
 }
 
