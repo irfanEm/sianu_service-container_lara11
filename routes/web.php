@@ -76,3 +76,6 @@ Route::get('/psr-11/{nama}', function(ContainerInterface $container, $nama) {
 
 // test register method
 Route::get('/register-method', [ServiceProviderController::class, 'testRegisterMethod']);
+
+// test properties $bindings & $singletons
+Route::get('/properties-singletons', [ServiceProviderController::class, 'testPropertySingletonsAndBindings']);
