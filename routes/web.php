@@ -79,3 +79,6 @@ Route::get('/register-method', [ServiceProviderController::class, 'testRegisterM
 
 // test properties $bindings & $singletons
 Route::get('/properties-singletons', [ServiceProviderController::class, 'testPropertySingletonsAndBindings']);
+
+// test Dependencies Injection on boot method.
+Route::get('/testBootMethodInject', [ServiceProviderController::class, 'testBootMethodDepInject']);

@@ -36,4 +36,15 @@ class ServiceProviderController extends Controller
             'sms' => $notifSMS,
         ]);
     }
+
+    public function testBootMethodDepInject(): JsonResponse
+    {
+        $data = [
+            'id' => 'im2711',
+            'name' => 'Produk Test 2711',
+            'price' => 2711000
+        ];
+
+        return response()->standardJson('success', $data);
+    }
 }
