@@ -16,11 +16,16 @@ use App\Http\Controllers\EventPusherController;
 use App\Http\Controllers\ReportAnalyzerController;
 use App\Http\Controllers\ReportAggregatorController;
 use App\Http\Controllers\ServiceProviderController;
+use App\Services\EmailNotifier;
 use App\Services\SapaNama;
 use Psr\Container\ContainerInterface;
 
 Route::get('/', function () {
-    return view('welcome');
+    $testNotif = app()->bound(EmailNotifier::class);
+    var_dump($testNotif);
+    // $notif = App::make(EmailNotifier::class);
+    // return $notif->kirimNotif('test notifikasi');
+    // return view('welcome');
 });
 
 Route::get('/log-admin', [AdminController::class, 'index']);
@@ -82,3 +87,6 @@ Route::get('/properties-singletons', [ServiceProviderController::class, 'testPro
 
 // test Dependencies Injection on boot method.
 Route::get('/testBootMethodInject', [ServiceProviderController::class, 'testBootMethodDepInject']);
+
+// test DefferableProviders
+Route::get('/test-defferable-provider', [ServiceProviderController::class, 'testDefferProvider']);

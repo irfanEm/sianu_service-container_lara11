@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reports\Impl\SmsNotifier;
 use App\Reports\Notifier;
+use App\Services\EmailNotifier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -11,11 +12,13 @@ class ServiceProviderController extends Controller
 {
     protected $notifier;
     protected $smsNotifier;
+    protected $emailNotifier;
 
-    public function __construct(Notifier $notifier, SmsNotifier $smsNotifier)
+    public function __construct(Notifier $notifier, SmsNotifier $smsNotifier, EmailNotifier $emailNotifier)
     {
         $this->notifier = $notifier;
         $this->smsNotifier = $smsNotifier;
+        $this->emailNotifier = $emailNotifier;
     }
 
     public function testRegisterMethod()
@@ -46,5 +49,11 @@ class ServiceProviderController extends Controller
         ];
 
         return response()->standardJson('success', $data);
+    }
+
+    public function testDefferProvider(): JsonResponse
+    {
+        $notifikasi = $this->emailNotifier->kirimNotif("Notifikasi test untuk DefferableProvider");
+        return response()->standardJson('sukses', $notifikasi);
     }
 }

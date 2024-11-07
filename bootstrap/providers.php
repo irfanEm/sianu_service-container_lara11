@@ -5,5 +5,6 @@ return [
     App\Providers\AppServiceProvider::class,
     App\Providers\MisalProvider::class,
     App\Providers\NotifierServiceProvider::class,
+    App\Providers\NotifikasiServiceProvider::class,
     App\Providers\ResponseMacroServiceProvider::class,
 ];
